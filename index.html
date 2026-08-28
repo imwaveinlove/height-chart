@@ -215,7 +215,7 @@ h1{
              0 0 34px 0 hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .7);
 }
 .disc img{
-  width:100%;height:100%;object-fit:cover;display:block;
+  width:100%;height:100%;object-fit:contain;display:block;
   transform:translate(calc(var(--ix,0) * 1%),calc(var(--iy,0) * 1%)) scale(var(--iz,1));
 }
 .disc .initial{
@@ -293,7 +293,7 @@ h1{
 .stage.dragging{cursor:grabbing}
 .stage.empty{cursor:pointer}
 .stage img{
-  width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;
+  width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;
   transform:translate(calc(var(--ix,0) * 1%),calc(var(--iy,0) * 1%)) scale(var(--iz,1));
 }
 .stage .initial{
@@ -411,7 +411,7 @@ footer.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;f
       <input type="file" id="file" accept="image/*" hidden>
       <div class="ctl">
         <label for="izoom">크기</label>
-        <input type="range" id="izoom" min="25" max="400" step="1" value="100" disabled>
+        <input type="range" id="izoom" min="25" max="600" step="1" value="100" disabled>
         <span class="val" id="izoomVal" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);min-width:42px">100%</span>
       </div>
       <div class="row">
@@ -420,7 +420,7 @@ footer.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;f
         <button class="btn" id="fitImgBtn" type="button" disabled>채우기</button>
         <button class="btn" id="clearImgBtn" type="button" disabled>지우기</button>
       </div>
-      <span class="hint" id="frameHint">넣으면 그림 전체가 들어갑니다. 원 안에서 끌어 위치를, 슬라이더로 크기를 맞추세요. 「채우기」를 누르면 원을 꽉 채우도록 잘라 담습니다.</span>
+      <span class="hint" id="frameHint">넣으면 원본 전체가 잘림 없이 들어갑니다. 슬라이더로 키우면 그만큼 확대되고, 끌어서 보일 부분을 고르세요. 「채우기」는 원을 꽉 채우고, 「전체 보기」는 다시 전체를 담습니다.</span>
     </div>
     <div class="fld">
       <label for="fName">이름</label>
@@ -562,9 +562,13 @@ function normalize(c){
     series: String(c.series || "").slice(0, 40),
     height: clamp(Math.round(h * 2) / 2, 80, 280),
     img: typeof c.img === "string" && c.img.startsWith("data:image") ? c.img : null,
-    iz: clamp(Number(c.iz) || 1, 0.2, 4),
-    ix: clamp(Number(c.ix) || 0, -1000, 1000),
-    iy: clamp(Number(c.iy) || 0, -1000, 1000),
+    /* fv 2 = framing measured against object-fit:contain. Anything older
+       was measured against cover, where the same number frames something
+       else entirely — reset it to the whole picture instead of guessing. */
+    fv: 2,
+    iz: c.fv === 2 ? clamp(Number(c.iz) || 1, 0.25, 6) : 1,
+    ix: c.fv === 2 ? clamp(Number(c.ix) || 0, -1000, 1000) : 0,
+    iy: c.fv === 2 ? clamp(Number(c.iy) || 0, -1000, 1000) : 0,
   };
 }
 
@@ -957,18 +961,26 @@ function syncStage(){
   $("#clearImgBtn").disabled = !has;
 }
 
-/* How far the picture may be dragged, as a percentage of the disc.
-   object-fit:cover scales it to the short side, so a wide photo hangs
-   over the edges by (drawn - disc) / 2 — that overhang is exactly the
-   travel needed to bring its far edge into view. Ratios only, so the
-   stored value stays valid at any disc size. */
+/* object-fit:contain fits the WHOLE picture inside the disc at iz 1, so
+   scaling up is what crops — the opposite of cover, where the crop
+   happened first and scaling could never give it back.
+   fitScale/fillScale/panRange all work in ratios of the disc, so a
+   stored framing stays correct at any avatar size. */
+function fitScale(im){            /* iz that shows the whole picture */
+  return 1;
+}
+function fillScale(im){           /* iz that fills the circle edge to edge */
+  if (!im || !im.naturalWidth) return 1;
+  return Math.max(im.naturalWidth, im.naturalHeight) / Math.min(im.naturalWidth, im.naturalHeight);
+}
+function drawnRatio(im, iz){      /* rendered size, in units of the disc */
+  const c = Math.min(1 / im.naturalWidth, 1 / im.naturalHeight) * iz;
+  return { w: im.naturalWidth * c, h: im.naturalHeight * c };
+}
 function panRange(im, iz){
   if (!im || !im.naturalWidth) return { x:0, y:0 };
-  const cover = Math.max(1 / im.naturalWidth, 1 / im.naturalHeight) * iz;
-  return {
-    x: Math.abs(im.naturalWidth * cover - 1) / 2 * 100,
-    y: Math.abs(im.naturalHeight * cover - 1) / 2 * 100,
-  };
+  const d = drawnRatio(im, iz);
+  return { x: Math.abs(d.w - 1) / 2 * 100, y: Math.abs(d.h - 1) / 2 * 100 };
 }
 
 /* downscale so localStorage stays small; keep aspect for reframing */
@@ -994,11 +1006,8 @@ function ingest(file){
       /* keep a transparent background transparent; JPEG only when opaque */
       const alpha = hasAlpha(g, cv.width, cv.height);
       const data = alpha ? cv.toDataURL("image/png") : cv.toDataURL("image/jpeg", 0.86);
-      /* start showing the WHOLE picture: object-fit:cover would crop a
-         non-square image to its short side, and that is what people
-         expect back the moment they drop a photo in */
-      const fit = Math.min(cv.width, cv.height) / Math.max(cv.width, cv.height);
-      state.draft = { img: data, iz: clamp(fit, 0.2, 1), ix:0, iy:0 };
+      /* contain means iz 1 already shows all of it */
+      state.draft = { img: data, iz:1, ix:0, iy:0 };
       syncStage();
     };
     img.onerror = () => toast("이미지를 읽지 못했습니다");
@@ -1015,7 +1024,7 @@ function commit(){
   if (!Number.isFinite(h) || h < 80 || h > 280){ toast("키는 80~280cm 사이로 입력해 주세요"); $("#fHeight").focus(); return; }
   const d = state.draft;
   const rec = normalize({ id: state.editing || uid(), name, series: $("#fSeries").value.trim(),
-                          height: h, img: d.img, iz: d.iz, ix: d.ix, iy: d.iy });
+                          height: h, img: d.img, fv: 2, iz: d.iz, ix: d.ix, iy: d.iy });
   const i = state.chars.findIndex(x => x.id === rec.id);
   if (i >= 0) state.chars[i] = rec; else state.chars.push(rec);
   save(); render(); closePanel();
@@ -1046,12 +1055,12 @@ function roundRect(g, x, y, w, h, r){
   g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
   g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
 }
-/* mirrors .disc img: object-fit cover, then scale(iz), then translate(ix%,iy%) */
+/* mirrors .disc img: object-fit contain, then scale(iz), then translate(ix%,iy%) */
 function drawFramed(g, img, cx, cy, D, iz, ix, iy){
   g.save();
   g.beginPath(); g.arc(cx, cy, D / 2, 0, Math.PI * 2); g.clip();
-  const cover = Math.max(D / img.width, D / img.height) * iz;
-  const w = img.width * cover, h = img.height * cover;
+  const contain = Math.min(D / img.width, D / img.height) * iz;
+  const w = img.width * contain, h = img.height * contain;
   g.drawImage(img, cx - w / 2 + (ix / 100) * D, cy - h / 2 + (iy / 100) * D, w, h);
   g.restore();
 }
@@ -1376,7 +1385,7 @@ document.addEventListener("paste", e => {
   for (const it of items) if (it.type.startsWith("image/")){ ingest(it.getAsFile()); return; }
 });
 $("#izoom").addEventListener("input", e => {
-  state.draft.iz = clamp(Number(e.target.value) / 100, 0.2, 4);
+  state.draft.iz = clamp(Number(e.target.value) / 100, 0.25, 6);
   $("#izoomVal").textContent = Math.round(state.draft.iz * 100) + "%";
   const im = stage.querySelector("img");
   if (!im) return;
@@ -1387,14 +1396,16 @@ $("#izoom").addEventListener("input", e => {
   im.style.setProperty("--ix", state.draft.ix);
   im.style.setProperty("--iy", state.draft.iy);
 });
-$("#fitImgBtn").addEventListener("click", () => { state.draft.iz = 1; state.draft.ix = 0; state.draft.iy = 0; syncStage(); });
+$("#fitImgBtn").addEventListener("click", () => {
+  const im = stage.querySelector("img");
+  state.draft.iz = clamp(fillScale(im), 0.25, 6);
+  state.draft.ix = 0; state.draft.iy = 0;
+  syncStage();
+});
 /* object-fit:cover already crops to the short side, so the scale that
    brings the whole picture back into view is exactly its aspect ratio */
 $("#containBtn").addEventListener("click", () => {
-  const im = stage.querySelector("img");
-  if (!im || !im.naturalWidth) return;
-  const a = Math.min(im.naturalWidth, im.naturalHeight) / Math.max(im.naturalWidth, im.naturalHeight);
-  state.draft.iz = clamp(a, 0.2, 1);
+  state.draft.iz = fitScale(stage.querySelector("img"));
   state.draft.ix = 0; state.draft.iy = 0;
   syncStage();
 });
