@@ -8,7 +8,15 @@ function safeJSON(v){
 }
 function buildHTML(){
   const doc = document.documentElement.cloneNode(true);
-  doc.querySelectorAll(".tok,.leader,.empty,.tick,.rlab,.runit,.base,.stat,script[data-seed]").forEach(n => n.remove());
+  /* Strip only the nodes render() regenerates, each scoped to the container
+     that owns it. Bare class selectors are not safe here: the image stage
+     carries .empty as a state flag and an unscoped ".empty" deleted it,
+     which took #stage out of the saved file and broke its boot. */
+  doc.querySelectorAll(
+    "#plot .tok, #plot .leader, #plot .empty, " +
+    "#ruler .tick, #ruler .rlab, #ruler .runit, #ruler .base, " +
+    "#stats .stat, script[data-seed]"
+  ).forEach(n => n.remove());
   const t = doc.querySelector("#toast"); if (t){ t.textContent = ""; t.className = "toast"; }
   const p = doc.querySelector("#panel"); if (p){ p.className = "panel"; p.setAttribute("aria-hidden", "true"); }
   const sc = doc.querySelector("#scrim"); if (sc) sc.className = "scrim";
