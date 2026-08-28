@@ -1,0 +1,1362 @@
+<title>키 눈금자</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cg fill='%23FF2D87'%3E%3Crect x='2' y='0' width='3' height='1'/%3E%3Crect x='11' y='0' width='3' height='1'/%3E%3Crect x='2' y='1' width='1' height='3'/%3E%3Crect x='4' y='1' width='1' height='3'/%3E%3Crect x='11' y='1' width='1' height='3'/%3E%3Crect x='13' y='1' width='1' height='3'/%3E%3Crect x='7' y='2' width='2' height='1'/%3E%3Crect x='6' y='3' width='4' height='1'/%3E%3Crect x='2' y='4' width='12' height='2'/%3E%3Crect x='3' y='6' width='1' height='5'/%3E%3Crect x='12' y='6' width='1' height='5'/%3E%3Crect x='5' y='7' width='2' height='1'/%3E%3Crect x='9' y='7' width='2' height='1'/%3E%3Crect x='6' y='9' width='1' height='1'/%3E%3Crect x='9' y='9' width='1' height='1'/%3E%3Crect x='7' y='10' width='2' height='1'/%3E%3Crect x='3' y='11' width='1' height='1'/%3E%3Crect x='12' y='11' width='1' height='1'/%3E%3Crect x='4' y='12' width='1' height='1'/%3E%3Crect x='11' y='12' width='1' height='1'/%3E%3Crect x='5' y='13' width='1' height='1'/%3E%3Crect x='10' y='13' width='1' height='1'/%3E%3Crect x='6' y='14' width='1' height='1'/%3E%3Crect x='9' y='14' width='1' height='1'/%3E%3Crect x='7' y='15' width='2' height='1'/%3E%3C/g%3E%3Cg fill='%23FFB3D9'%3E%3Crect x='4' y='6' width='8' height='1'/%3E%3Crect x='4' y='7' width='1' height='1'/%3E%3Crect x='7' y='7' width='2' height='1'/%3E%3Crect x='11' y='7' width='1' height='1'/%3E%3Crect x='4' y='8' width='8' height='1'/%3E%3Crect x='4' y='9' width='2' height='1'/%3E%3Crect x='7' y='9' width='2' height='1'/%3E%3Crect x='10' y='9' width='2' height='1'/%3E%3Crect x='4' y='10' width='3' height='1'/%3E%3Crect x='9' y='10' width='3' height='1'/%3E%3Crect x='4' y='11' width='8' height='1'/%3E%3Crect x='5' y='12' width='6' height='1'/%3E%3Crect x='6' y='13' width='4' height='1'/%3E%3Crect x='7' y='14' width='2' height='1'/%3E%3C/g%3E%3Cg fill='%23C9CDDE'%3E%3Crect x='1' y='6' width='1' height='5'/%3E%3Crect x='14' y='6' width='1' height='5'/%3E%3C/g%3E%3Cg fill='%239BA3BE'%3E%3Crect x='2' y='6' width='1' height='5'/%3E%3Crect x='13' y='6' width='1' height='5'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+
+<style>
+/* ─── tokens ─────────────────────────────────────────────── */
+:root{
+  --paper:#EDEFF3;
+  --field:#F6F7FA;
+  --surface:#FFFFFF;
+  --ink:#14181F;
+  --ink-2:#4B5563;
+  --ink-3:#7C8798;
+  --rule:#CBD2DC;
+  --rule-soft:#DDE2EA;
+  --navy:#1F3A5F;
+  --navy-ink:#FFFFFF;
+  --danger:#B3261E;
+  --tone:0%;            /* scale-ramp lightness shift */
+  --chip:-9%;           /* cm-chip text shift, per theme */
+  --shadow:0 1px 2px rgba(20,24,31,.06), 0 8px 24px -12px rgba(20,24,31,.22);
+  --shadow-lift:0 2px 6px rgba(20,24,31,.10), 0 18px 40px -16px rgba(20,24,31,.34);
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1116; --field:#131820; --surface:#1A2029;
+    --ink:#E5E9EF; --ink-2:#A6B0BF; --ink-3:#6F7B8C;
+    --rule:#2C3543; --rule-soft:#232B36;
+    --navy:#8FB4E4; --navy-ink:#0E1116; --danger:#F2867E;
+    --tone:9%; --chip:10%;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    --shadow-lift:0 2px 6px rgba(0,0,0,.45), 0 18px 40px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1116; --field:#131820; --surface:#1A2029;
+  --ink:#E5E9EF; --ink-2:#A6B0BF; --ink-3:#6F7B8C;
+  --rule:#2C3543; --rule-soft:#232B36;
+  --navy:#8FB4E4; --navy-ink:#0E1116; --danger:#F2867E;
+  --tone:9%; --chip:10%;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.45), 0 18px 40px -16px rgba(0,0,0,.8);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px;border-radius:4px}
+
+/* ─── shell ──────────────────────────────────────────────── */
+.wrap{max-width:1360px;margin:0 auto;padding:28px 20px 64px;display:flex;flex-direction:column;gap:18px}
+
+header.head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px}
+.brand{display:flex;flex-direction:column;gap:4px;min-width:0}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+}
+h1{
+  font-family:"Bricolage Grotesque","IBM Plex Sans KR",sans-serif;
+  font-variation-settings:"wdth" 88,"opsz" 48;
+  font-weight:700;font-size:clamp(30px,4.4vw,46px);line-height:1.02;
+  margin:0;letter-spacing:-.02em;text-wrap:balance;
+}
+.tagline{color:var(--ink-2);font-size:14px;max-width:46ch}
+
+.stats{display:flex;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.stat{padding:9px 16px;display:flex;flex-direction:column;gap:1px;min-width:78px}
+.stat + .stat{border-left:1px solid var(--rule-soft)}
+.stat .k{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat .v small{font-size:11px;font-weight:400;color:var(--ink-3);margin-left:1px}
+
+/* ─── toolbar ────────────────────────────────────────────── */
+.bars{display:flex;flex-direction:column;gap:8px}
+.toolbar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  padding:10px 12px;background:var(--surface);
+  border:1px solid var(--rule);border-radius:var(--r);
+}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 14px;border-radius:8px;border:1px solid var(--rule);
+  background-color:var(--surface);cursor:pointer;font-size:13.5px;font-weight:500;
+  transition:background-color .14s,border-color .14s,transform .14s,opacity .14s;
+}
+.btn:hover{background-color:var(--field);border-color:var(--ink-3)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.btn.primary{background-color:var(--navy);color:var(--navy-ink);border-color:var(--navy)}
+.btn.primary:hover{filter:brightness(1.12)}
+.btn.ghost{border-color:transparent;background-color:transparent;color:var(--ink-2)}
+.btn.ghost:hover{background-color:var(--field);color:var(--ink)}
+.btn.danger{color:var(--danger);border-color:var(--rule)}
+.btn.danger:hover{background-color:color-mix(in srgb,var(--danger) 10%,transparent);border-color:var(--danger)}
+
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.seg button{
+  padding:8px 13px;background-color:var(--surface);border:0;cursor:pointer;
+  font-size:13px;color:var(--ink-2);transition:background-color .14s,color .14s;
+}
+.seg button + button{border-left:1px solid var(--rule-soft)}
+.seg button[aria-pressed="true"]{background-color:var(--navy);color:var(--navy-ink);font-weight:600}
+.seg button:not([aria-pressed="true"]):hover{background-color:var(--field);color:var(--ink)}
+
+.knob{display:flex;align-items:center;gap:9px;padding-left:2px}
+.knob > label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.knob input[type=range]{width:104px;accent-color:var(--navy)}
+.knob .val{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:52px}
+.knob.off{opacity:.35}
+.spacer{flex:1 1 auto;min-width:0}
+.sep{width:1px;align-self:stretch;background:var(--rule-soft);margin:0 2px}
+
+/* ─── the field ──────────────────────────────────────────── */
+.fieldwrap{
+  position:relative;border:1px solid var(--rule);border-radius:var(--r);
+  background:var(--field);overflow-x:auto;overflow-y:hidden;box-shadow:var(--shadow);
+}
+.fieldwrap.vert{overflow-y:visible}
+.plot{position:relative;min-height:320px}
+.grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(to right,var(--rule-soft) 0 1px,transparent 1px var(--gx,60px)),
+    repeating-linear-gradient(to bottom,var(--rule-soft) 0 1px,transparent 1px var(--gy,60px));
+  background-position:var(--gx-off,0) var(--gy-off,0);
+  opacity:.7;
+  -webkit-mask-image:var(--gmask,linear-gradient(to bottom,transparent 0,#000 40px));
+          mask-image:var(--gmask,linear-gradient(to bottom,transparent 0,#000 40px));
+}
+
+.leader{position:absolute;pointer-events:none}
+.leader.h{width:0;border-left:1px dashed hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .5)}
+.leader.v{height:0;border-top:1px dashed hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .5)}
+.leader::after{
+  content:"";position:absolute;width:6px;height:6px;border-radius:50%;
+  background:hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)));
+}
+.leader.h::after{left:-3px;bottom:-3px}
+.leader.v::after{top:-3px;left:-3px}
+
+/* ─── character token ────────────────────────────────────── */
+.tok{
+  position:absolute;display:flex;border:0;background:none;padding:0;cursor:pointer;
+  transition:transform .18s cubic-bezier(.2,.7,.3,1);
+}
+.tok.h{flex-direction:column;align-items:center;gap:6px}
+.tok.v{flex-direction:row;align-items:center;gap:11px;text-align:left}
+.tok:hover,.tok:focus-visible{z-index:5}
+.tok.h:hover,.tok.h:focus-visible{transform:translateY(-5px)}
+.tok.v:hover,.tok.v:focus-visible{transform:translateX(5px)}
+.disc{
+  width:var(--d);height:var(--d);border-radius:50%;overflow:hidden;position:relative;flex:0 0 auto;
+  background-color:hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)));
+  box-shadow:var(--shadow), 0 0 0 3px var(--field), 0 0 0 4px hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .55);
+  transition:box-shadow .18s;
+}
+.tok:hover .disc,.tok:focus-visible .disc{
+  box-shadow:var(--shadow-lift), 0 0 0 3px var(--field), 0 0 0 5px hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)));
+}
+.disc img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transform:translate(calc(var(--ix,0) * 1%),calc(var(--iy,0) * 1%)) scale(var(--iz,1));
+}
+.disc .initial{
+  position:absolute;inset:0;display:grid;place-items:center;
+  color:hsl(var(--ch) calc(var(--cs) + 14%) calc(var(--cl) + var(--tone) - 28%));
+  font-family:"Bricolage Grotesque",sans-serif;font-variation-settings:"wdth" 82;
+  font-weight:700;font-size:calc(var(--d) * .40);line-height:1;
+}
+.meta{display:flex;flex-direction:column;gap:3px;min-width:0}
+.tok.h .meta{align-items:center;width:100%}
+.tok.v .meta{align-items:flex-start;flex:1 1 auto}
+.tok .nm,.tok .sr{
+  width:100%;word-break:keep-all;overflow-wrap:anywhere;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;
+}
+.tok.h .nm,.tok.h .sr{text-align:center}
+.tok .nm{font-size:12.5px;font-weight:600;line-height:1.25}
+.tok .sr{font-size:10.5px;color:var(--ink-3);line-height:1.2}
+.tok .cm{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+  padding:1px 7px;border-radius:99px;white-space:nowrap;
+  color:hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone) + var(--chip)));
+  background-color:hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .14);
+  border:1px solid hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .32);
+}
+
+/* ─── ruler ──────────────────────────────────────────────── */
+.ruler{position:absolute;pointer-events:none}
+.ruler .base{position:absolute;background:var(--ink);opacity:.8}
+.tick{position:absolute;background:var(--rule)}
+.rlab{
+  position:absolute;font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+  font-variant-numeric:tabular-nums;color:var(--ink-3);white-space:nowrap;
+}
+.runit{
+  position:absolute;font-family:"IBM Plex Mono",monospace;font-size:10px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+}
+.empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--ink-3);font-size:14px;padding:24px}
+
+/* ─── editor panel ───────────────────────────────────────── */
+.scrim{position:fixed;inset:0;background:rgba(10,13,18,.42);opacity:0;pointer-events:none;transition:opacity .2s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.panel{
+  position:fixed;top:0;right:0;height:100%;width:min(390px,100%);z-index:50;
+  background:var(--surface);border-left:1px solid var(--rule);
+  transform:translateX(101%);transition:transform .26s cubic-bezier(.3,.8,.3,1);
+  display:flex;flex-direction:column;box-shadow:var(--shadow-lift);
+}
+.panel.on{transform:none}
+.panel > header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--rule-soft)}
+.panel > header h2{
+  margin:0;font-family:"Bricolage Grotesque","IBM Plex Sans KR",sans-serif;
+  font-variation-settings:"wdth" 88;font-size:19px;font-weight:700;letter-spacing:-.01em;
+}
+.panel .body{padding:18px;display:flex;flex-direction:column;gap:15px;overflow-y:auto;flex:1}
+.panel > footer{padding:14px 18px;border-top:1px solid var(--rule-soft);display:flex;gap:10px}
+.panel > footer .btn{flex:1;justify-content:center}
+
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld > label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.fld input[type=text],.fld input[type=number]{width:100%;padding:9px 11px;border:1px solid var(--rule);border-radius:8px;background:var(--field)}
+.fld input:focus{outline:2px solid var(--navy);outline-offset:-1px;border-color:transparent}
+.hint{font-size:11.5px;color:var(--ink-3)}
+
+/* image framing */
+.framer{display:flex;flex-direction:column;gap:11px;align-items:center}
+.stage{
+  width:150px;height:150px;border-radius:50%;overflow:hidden;position:relative;
+  background-color:hsl(var(--ch,210) var(--cs,12%) calc(var(--cl,62%) + var(--tone)));
+  box-shadow:var(--shadow),0 0 0 3px var(--surface),0 0 0 4px var(--rule);
+  cursor:grab;touch-action:none;
+}
+.stage.dragging{cursor:grabbing}
+.stage.empty{cursor:pointer}
+.stage img{
+  width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;
+  transform:translate(calc(var(--ix,0) * 1%),calc(var(--iy,0) * 1%)) scale(var(--iz,1));
+}
+.stage .initial{
+  position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;
+  color:hsl(var(--ch,210) calc(var(--cs,12%) + 14%) calc(var(--cl,62%) + var(--tone) - 28%));
+  font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:58px;
+}
+.stage .hintline{
+  position:absolute;left:0;right:0;bottom:0;padding:7px 4px;text-align:center;
+  font-size:11px;color:#fff;background:linear-gradient(to top,rgba(10,13,18,.62),transparent);
+  pointer-events:none;
+}
+.framer .ctl{display:flex;align-items:center;gap:9px;width:100%}
+.framer .ctl input[type=range]{flex:1;accent-color:var(--navy)}
+.framer .ctl label{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.framer .row{display:flex;gap:8px;width:100%}
+.framer .row .btn{flex:1;justify-content:center;padding:7px 10px;font-size:12.5px}
+.dz{outline:2px dashed var(--navy);outline-offset:3px}
+
+footer.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--ink-3);padding-top:2px}
+
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);
+  background:var(--ink);color:var(--paper);padding:9px 18px;border-radius:99px;
+  font-size:13px;box-shadow:var(--shadow-lift);opacity:0;pointer-events:none;
+  transition:opacity .2s,transform .2s;z-index:80;max-width:min(90vw,520px);text-align:center;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;animation-duration:.01ms !important}}
+@media (max-width:640px){
+  .wrap{padding:20px 14px 48px}
+  .stats{width:100%}
+  .stat{flex:1;min-width:0;padding:8px 10px}
+}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <div class="brand">
+      <span class="eyebrow">Character height chart</span>
+      <h1>키 눈금자</h1>
+      <p class="tagline">캐릭터를 실제 키 좌표 위에 찍어 비교합니다. 겹치면 옆으로 쌓이고, 점선이 눈금자까지 이어집니다.</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="bars">
+    <div class="toolbar">
+      <button class="btn primary" id="addBtn">＋ 캐릭터 추가</button>
+      <span class="sep"></span>
+      <div class="seg" role="group" aria-label="방향">
+        <button id="oH" aria-pressed="true">가로</button>
+        <button id="oV" aria-pressed="false">세로</button>
+      </div>
+      <div class="seg" role="group" aria-label="배치 방식">
+        <button id="mProp" aria-pressed="true">비례 배치</button>
+        <button id="mRank" aria-pressed="false">균등 배치</button>
+      </div>
+      <span class="spacer"></span>
+      <button class="btn ghost" id="themeBtn" title="라이트/다크 전환">◑ 테마</button>
+    </div>
+
+    <div class="toolbar">
+      <div class="knob" id="zoomKnob">
+        <label for="zoom">Scale</label>
+        <input type="range" id="zoom" min="18" max="130" step="1" value="60">
+        <span class="val" id="zoomVal">60 px/cm</span>
+      </div>
+      <button class="btn ghost" id="fitBtn">화면에 맞추기</button>
+      <span class="sep"></span>
+      <div class="knob">
+        <label for="size">아바타</label>
+        <input type="range" id="size" min="52" max="150" step="2" value="84">
+        <span class="val" id="sizeVal">84 px</span>
+      </div>
+      <span class="spacer"></span>
+      <button class="btn" id="pngBtn">🖼 PNG로 저장</button>
+      <button class="btn" id="htmlBtn">📄 HTML로 저장</button>
+      <button class="btn danger" id="resetBtn">예시로 되돌리기</button>
+    </div>
+  </div>
+
+  <div class="fieldwrap" id="fieldwrap">
+    <div class="plot" id="plot">
+      <div class="grid" id="grid"></div>
+      <div class="ruler" id="ruler"></div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span>브라우저에 자동 저장됩니다 · 아바타를 누르면 수정</span>
+    <span id="savedAt"></span>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel" aria-hidden="true" aria-label="캐릭터 편집">
+  <header>
+    <h2 id="panelTitle">캐릭터 추가</h2>
+    <button class="btn ghost" id="closeBtn" aria-label="닫기">✕</button>
+  </header>
+  <div class="body">
+    <div class="framer">
+      <div class="stage empty" id="stage" tabindex="0" role="button" aria-label="이미지 등록 후 드래그해서 위치 조절">
+        <span class="initial">?</span>
+        <span class="hintline" id="stageHint">클릭 · 드래그 · 붙여넣기</span>
+      </div>
+      <input type="file" id="file" accept="image/*" hidden>
+      <div class="ctl">
+        <label for="izoom">크기</label>
+        <input type="range" id="izoom" min="100" max="400" step="2" value="100" disabled>
+        <span class="val" id="izoomVal" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);min-width:42px">100%</span>
+      </div>
+      <div class="row">
+        <button class="btn" id="pickBtn" type="button">이미지 선택</button>
+        <button class="btn" id="fitImgBtn" type="button" disabled>가운데 맞춤</button>
+        <button class="btn" id="clearImgBtn" type="button" disabled>지우기</button>
+      </div>
+      <span class="hint" id="frameHint">이미지를 넣은 뒤 원 안에서 끌어 위치를, 슬라이더로 크기를 맞추세요.</span>
+    </div>
+    <div class="fld">
+      <label for="fName">이름</label>
+      <input type="text" id="fName" placeholder="고죠 사토루" autocomplete="off">
+    </div>
+    <div class="fld">
+      <label for="fSeries">작품 <span style="text-transform:none;letter-spacing:0">(선택)</span></label>
+      <input type="text" id="fSeries" placeholder="주술회전" autocomplete="off">
+    </div>
+    <div class="fld">
+      <label for="fHeight">키 (cm)</label>
+      <input type="number" id="fHeight" min="80" max="280" step="0.5" placeholder="190">
+      <span class="hint">소수점 0.5까지 입력할 수 있습니다.</span>
+    </div>
+    <button class="btn danger" id="delBtn" style="align-self:flex-start">이 캐릭터 삭제</button>
+  </div>
+  <footer>
+    <button class="btn" id="cancelBtn">취소</button>
+    <button class="btn primary" id="saveBtn">저장</button>
+  </footer>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+"use strict";
+
+/* ─── constants ──────────────────────────────────────────── */
+const HGAP = 18, VGAP = 20;   // clearance between tokens
+const PAD  = 78;              // horizontal padding, horizontal mode
+const LABEL = 68;             // label band under a disc, horizontal mode
+const RH   = 40;              // ruler band, horizontal mode
+const GUT  = 66;              // ruler gutter, vertical mode
+const VTEXT = 148;            // label column beside a disc, vertical mode
+const VGAP2 = 14, VCOL = 20;  // vertical-mode gaps
+
+const RAMP = [
+  { p:0,   h:184, s:44, l:37 },
+  { p:0.5, h:104, s:17, l:48 },
+  { p:1,   h:26,  s:66, l:47 },
+];
+
+const SEED = [
+  { name:"쿠기사키 노바라", series:"주술회전", height:160 },
+  { name:"미도리야 이즈쿠", series:"나의 히어로 아카데미아", height:166 },
+  { name:"바쿠고 카츠키",   series:"나의 히어로 아카데미아", height:172 },
+  { name:"이타도리 유지",   series:"주술회전", height:173 },
+  { name:"후시구로 메구미", series:"주술회전", height:175 },
+  { name:"토도로키 쇼토",   series:"나의 히어로 아카데미아", height:176 },
+  { name:"아이자와 쇼타",   series:"나의 히어로 아카데미아", height:183 },
+  { name:"나나미 켄토",     series:"주술회전", height:184 },
+  { name:"고죠 사토루",     series:"주술회전", height:190 },
+];
+
+/* A file exported by "HTML로 저장" carries its own data and its own
+   storage key, so it never collides with the page it came from. */
+const BAKED = (typeof window.__HC_SEED__ === "object" && window.__HC_SEED__) || null;
+const KEY = BAKED ? "height-chart/x-" + BAKED.eid : "height-chart/v1";
+
+const state = {
+  chars: [], mode:"prop", orient:"h", ppc:60, ppcH:60, ppcV:26, size:84,
+  editing:null, draft:{ img:null, iz:1, ix:0, iy:0 },
+};
+
+const $ = (s, r=document) => r.querySelector(s);
+const uid = () => Math.random().toString(36).slice(2, 9);
+const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
+const fmt = n => (Number.isInteger(n) ? String(n) : n.toFixed(1));
+
+/* ─── persistence ────────────────────────────────────────── */
+function adopt(d){
+  if (!d || !Array.isArray(d.chars)) return false;
+  const chars = d.chars.map(normalize).filter(Boolean);
+  if (!chars.length) return false;
+  state.chars = chars;
+  if (d.mode === "rank" || d.mode === "prop") state.mode = d.mode;
+  if (d.orient === "v" || d.orient === "h") state.orient = d.orient;
+  if (Number.isFinite(d.ppcH)) state.ppcH = clamp(d.ppcH, 18, 130);
+  if (Number.isFinite(d.ppcV)) state.ppcV = clamp(d.ppcV, 18, 130);
+  if (Number.isFinite(d.ppc)) state.ppc = clamp(d.ppc, 18, 130);
+  else state.ppc = state.orient === "v" ? state.ppcV : state.ppcH;
+  if (Number.isFinite(d.size)) state.size = clamp(d.size, 52, 150);
+  return true;
+}
+function load(){
+  let raw = null;
+  try { raw = localStorage.getItem(KEY); } catch(e){}
+  if (raw){ try { if (adopt(JSON.parse(raw))) return; } catch(e){} }
+  if (BAKED && adopt(BAKED)) return;
+  state.chars = SEED.map(normalize);
+}
+function snapshot(){
+  const h = state.orient === "h" ? state.ppc : state.ppcH;
+  const v = state.orient === "v" ? state.ppc : state.ppcV;
+  return { chars:state.chars, mode:state.mode, orient:state.orient,
+           ppc:state.ppc, ppcH:h, ppcV:v, size:state.size };
+}
+function save(){
+  try {
+    localStorage.setItem(KEY, JSON.stringify(snapshot()));
+    $("#savedAt").textContent = "저장됨 " + new Date().toLocaleTimeString("ko-KR", { hour:"2-digit", minute:"2-digit" });
+  } catch(e){
+    $("#savedAt").textContent = "저장 공간이 가득 찼습니다 — 이미지를 줄이거나 캐릭터를 지워 주세요";
+  }
+}
+function normalize(c){
+  const h = Number(c && c.height);
+  if (!c || !Number.isFinite(h)) return null;
+  return {
+    id: c.id || uid(),
+    name: String(c.name || "이름 없음").slice(0, 40),
+    series: String(c.series || "").slice(0, 40),
+    height: clamp(Math.round(h * 2) / 2, 80, 280),
+    img: typeof c.img === "string" && c.img.startsWith("data:image") ? c.img : null,
+    iz: clamp(Number(c.iz) || 1, 1, 4),
+    ix: clamp(Number(c.ix) || 0, -70, 70),
+    iy: clamp(Number(c.iy) || 0, -70, 70),
+  };
+}
+
+/* ─── colour ─────────────────────────────────────────────── */
+function ramp(t){
+  t = clamp(t, 0, 1);
+  let i = 0;
+  while (i < RAMP.length - 2 && t > RAMP[i + 1].p) i++;
+  const a = RAMP[i], b = RAMP[i + 1], u = (t - a.p) / (b.p - a.p);
+  return {
+    h: Math.round(a.h + (b.h - a.h) * u),
+    s: Math.round(a.s + (b.s - a.s) * u),
+    l: Math.round(a.l + (b.l - a.l) * u),
+  };
+}
+function paint(el, t){
+  const c = ramp(t);
+  el.style.setProperty("--ch", c.h);
+  el.style.setProperty("--cs", c.s + "%");
+  el.style.setProperty("--cl", c.l + "%");
+}
+const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const toneNow = () => parseFloat(cssVar("--tone")) || 0;
+/* the same colour the DOM shows, resolved for canvas */
+function rampCss(t, alpha){
+  const c = ramp(t), l = c.l + toneNow();
+  return `hsl(${c.h} ${c.s}% ${l}%${alpha == null ? "" : " / " + alpha})`;
+}
+function inkOn(t){
+  const c = ramp(t);
+  return `hsl(${c.h} ${c.s + 14}% ${c.l + toneNow() - 28}%)`;
+}
+
+/* ─── layout ─────────────────────────────────────────────── */
+function bounds(list){
+  const hs = list.map(c => c.height);
+  let lo = Math.min(...hs), hi = Math.max(...hs);
+  if (hi - lo < 8){ const m = (hi + lo) / 2; lo = m - 4; hi = m + 4; }
+  const pad = Math.max(2, (hi - lo) * 0.1);
+  return { lo: Math.floor((lo - pad) / 2) * 2, hi: Math.ceil((hi + pad) / 2) * 2 };
+}
+/* greedy: first lane whose last occupant clears this one */
+function packLanes(pos, step){
+  const last = [];
+  const lane = pos.map(p => {
+    for (let i = 0; i < last.length; i++) if (p - last[i] >= step){ last[i] = p; return i; }
+    last.push(p); return last.length - 1;
+  });
+  return { lane, count: Math.max(1, last.length) };
+}
+
+function computeLayout(){
+  const list = [...state.chars].sort((a, b) => a.height - b.height || a.name.localeCompare(b.name, "ko"));
+  if (!list.length) return null;
+
+  const { lo, hi } = bounds(list);
+  const span = hi - lo;
+  const cLo = list[0].height, cHi = list[list.length - 1].height;
+  const tOf = h => (cHi > cLo ? (h - cLo) / (cHi - cLo) : 0.5);
+  const D = state.size, ppc = state.ppc, vert = state.orient === "v";
+  const view = $("#fieldwrap");
+  const viewW = view.clientWidth || 1200;
+  const viewH = Math.max(360, (window.innerHeight || 800) - 260);
+
+  if (!vert){
+    const step = D + HGAP;
+    const tokW = D + 34;
+    let xs;
+    if (state.mode === "rank"){
+      const inner = Math.max(viewW - PAD * 2, (list.length - 1) * step);
+      xs = list.map((_, i) => PAD + (list.length === 1 ? inner / 2 : (inner * i) / (list.length - 1)));
+    } else {
+      xs = list.map(c => PAD + (c.height - lo) * ppc);
+    }
+    const { lane, count } = packLanes(xs, step);
+    const LANE = D + LABEL + VGAP;
+    const H = RH + count * LANE + 22;
+    const axisW = state.mode === "prop" ? PAD * 2 + span * ppc : 0;
+    const W = Math.max(viewW, axisW, Math.ceil(xs[xs.length - 1] + PAD));
+    const axisPx = state.mode === "prop" ? ppc : (W - PAD * 2) / span;
+    const items = list.map((c, i) => ({
+      c, t: tOf(c.height), lane: lane[i],
+      cx: xs[i],
+      cy: H - RH - 10 - lane[i] * LANE - LABEL - D / 2,
+      tickAt: state.mode === "prop" ? xs[i] : PAD + (c.height - lo) * axisPx,
+    }));
+    return { vert:false, list, items, lo, hi, span, D, W, H, LANE, tokW, axisPx,
+             baseline: H - RH, blockBot: L => H - RH - 10 - L * LANE };
+  }
+
+  const tokW = D + 11 + VTEXT;
+  const step = D + VGAP2;
+  const top0 = D / 2 + 20;
+  let ys;
+  if (state.mode === "rank"){
+    const inner = Math.max(viewH - top0 * 2, (list.length - 1) * step);
+    ys = list.map((_, i) => top0 + (list.length === 1 ? inner / 2 : (inner * (list.length - 1 - i)) / (list.length - 1)));
+  } else {
+    ys = list.map(c => top0 + (hi - c.height) * ppc);
+  }
+  /* pack from the top downwards, so sort keys must ascend */
+  const order = list.map((_, i) => i).sort((a, b) => ys[a] - ys[b]);
+  const packed = packLanes(order.map(i => ys[i]), step);
+  const lane = [];
+  order.forEach((idx, k) => { lane[idx] = packed.lane[k]; });
+  const count = packed.count;
+
+  const H = Math.max(viewH, Math.ceil(ys[0] + top0));
+  const axisPx = state.mode === "prop" ? ppc : (H - top0 * 2) / span;
+  const W = Math.max(view.clientWidth || 0, GUT + 34 + count * (tokW + VCOL) + 12);
+  const items = list.map((c, i) => ({
+    c, t: tOf(c.height), lane: lane[i],
+    cx: GUT + 34 + lane[i] * (tokW + VCOL) + D / 2,
+    cy: ys[i],
+    tickAt: state.mode === "prop" ? ys[i] : top0 + (hi - c.height) * axisPx,
+  }));
+  return { vert:true, list, items, lo, hi, span, D, W, H, tokW, top0, axisPx,
+           baseline: GUT, laneX: L => GUT + 34 + L * (tokW + VCOL) };
+}
+
+/* ─── DOM render ─────────────────────────────────────────── */
+function render(){
+  const plot = $("#plot"), ruler = $("#ruler"), grid = $("#grid"), wrap = $("#fieldwrap");
+  plot.querySelectorAll(".tok,.leader,.empty").forEach(n => n.remove());
+  ruler.innerHTML = "";
+
+  const L = computeLayout();
+  renderStats(L);
+  wrap.classList.toggle("vert", state.orient === "v");
+
+  if (!L){
+    plot.style.width = "100%"; plot.style.height = "320px";
+    grid.style.setProperty("--gx", "60px"); grid.style.setProperty("--gy", "60px");
+    grid.style.setProperty("--gx-off", "0px"); grid.style.setProperty("--gy-off", "0px");
+    const e = document.createElement("div");
+    e.className = "empty";
+    e.textContent = "아직 캐릭터가 없습니다. ‘＋ 캐릭터 추가’로 첫 인물을 올려 보세요.";
+    plot.appendChild(e);
+    return;
+  }
+
+  plot.style.width = L.W + "px";
+  plot.style.height = L.H + "px";
+
+  /* graph-paper ruling, aligned to the ruler's own cm ticks */
+  const gs = state.mode === "prop" ? (state.ppc >= 24 ? state.ppc : state.ppc * 5) : 60;
+  if (L.vert){
+    grid.style.setProperty("--gx", "60px");
+    grid.style.setProperty("--gy", gs + "px");
+    grid.style.setProperty("--gx-off", "0px");
+    grid.style.setProperty("--gy-off", (state.mode === "prop" ? L.top0 % gs : 0) + "px");
+    grid.style.setProperty("--gmask", "linear-gradient(to right,transparent 0,#000 " + GUT + "px)");
+  } else {
+    grid.style.setProperty("--gx", gs + "px");
+    grid.style.setProperty("--gy", "60px");
+    grid.style.setProperty("--gx-off", (state.mode === "prop" ? PAD : 0) + "px");
+    grid.style.setProperty("--gy-off", "0px");
+    grid.style.setProperty("--gmask", "linear-gradient(to bottom,transparent 0,#000 40px)");
+  }
+
+  renderRuler(ruler, L);
+
+  for (const it of L.items){
+    const leader = document.createElement("div");
+    leader.className = "leader " + (L.vert ? "v" : "h");
+    paint(leader, it.t);
+    if (L.vert){
+      leader.style.left = L.baseline + "px";
+      leader.style.top = it.cy + "px";
+      leader.style.width = Math.max(0, it.cx - L.D / 2 - 4 - L.baseline) + "px";
+    } else {
+      leader.style.left = it.cx + "px";
+      leader.style.top = L.blockBot(it.lane) + "px";
+      leader.style.height = Math.max(0, L.baseline - L.blockBot(it.lane)) + "px";
+    }
+    plot.appendChild(leader);
+
+    plot.appendChild(buildToken(it, L));
+  }
+}
+
+function buildToken(it, L){
+  const c = it.c, D = L.D;
+  const tok = document.createElement("button");
+  tok.type = "button";
+  tok.className = "tok " + (L.vert ? "v" : "h");
+  tok.style.setProperty("--d", D + "px");
+  paint(tok, it.t);
+  if (L.vert){
+    tok.style.left = (it.cx - D / 2) + "px";
+    tok.style.top = (it.cy - D / 2) + "px";
+    tok.style.width = L.tokW + "px";
+  } else {
+    tok.style.left = (it.cx - L.tokW / 2) + "px";
+    tok.style.top = (it.cy - D / 2) + "px";
+    tok.style.width = L.tokW + "px";
+  }
+  tok.setAttribute("aria-label", `${c.name} ${fmt(c.height)}cm — 수정`);
+
+  const disc = document.createElement("div");
+  disc.className = "disc";
+  if (c.img){
+    const im = document.createElement("img");
+    im.src = c.img; im.alt = ""; im.draggable = false;
+    im.style.setProperty("--iz", c.iz);
+    im.style.setProperty("--ix", c.ix);
+    im.style.setProperty("--iy", c.iy);
+    disc.appendChild(im);
+  } else {
+    const sp = document.createElement("span");
+    sp.className = "initial";
+    sp.textContent = [...c.name][0] || "?";
+    disc.appendChild(sp);
+  }
+  tok.appendChild(disc);
+
+  const meta = document.createElement("div");
+  meta.className = "meta";
+  const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = c.name;
+  meta.appendChild(nm);
+  if (c.series){ const sr = document.createElement("span"); sr.className = "sr"; sr.textContent = c.series; meta.appendChild(sr); }
+  const cm = document.createElement("span"); cm.className = "cm"; cm.textContent = fmt(c.height) + "cm";
+  meta.appendChild(cm);
+  tok.appendChild(meta);
+
+  tok.addEventListener("click", () => openPanel(c.id));
+  return tok;
+}
+
+function tickPlan(){
+  const p = state.ppc;
+  return { step: p >= 46 ? 1 : p >= 26 ? 2 : 5, lab: p >= 46 ? 5 : 10 };
+}
+
+function renderRuler(ruler, L){
+  const base = document.createElement("div");
+  base.className = "base";
+  if (L.vert){
+    ruler.style.cssText = `left:0;top:0;width:${GUT}px;height:${L.H}px`;
+    base.style.cssText = `left:${GUT - 1}px;top:0;width:1.5px;height:100%`;
+  } else {
+    ruler.style.cssText = `left:0;bottom:0;width:${L.W}px;height:${RH}px`;
+    base.style.cssText = `left:0;top:0;width:100%;height:1.5px`;
+  }
+  ruler.appendChild(base);
+
+  if (state.mode === "prop"){
+    const { step, lab } = tickPlan();
+    for (let h = L.lo; h <= L.hi; h += step){
+      const major = h % lab === 0;
+      const t = document.createElement("div");
+      t.className = "tick";
+      if (L.vert){
+        const y = L.top0 + (L.hi - h) * state.ppc;
+        const w = major ? 12 : 6;
+        t.style.cssText = `left:${GUT - 1 - w}px;top:${y}px;width:${w}px;height:1px;` +
+          (major ? "background:var(--ink-3)" : "");
+        ruler.appendChild(t);
+        if (major){
+          const l = document.createElement("div");
+          l.className = "rlab";
+          l.textContent = h;
+          l.style.cssText = `right:${GUT - 1 + 4}px;top:${y - 8}px;text-align:right`;
+          l.style.right = "auto"; l.style.left = "6px";
+          ruler.appendChild(l);
+        }
+      } else {
+        const x = PAD + (h - L.lo) * state.ppc;
+        t.style.cssText = `left:${x}px;top:0;width:1px;height:${major ? 12 : 6}px;transform:translateX(-.5px);` +
+          (major ? "background:var(--ink-3)" : "");
+        ruler.appendChild(t);
+        if (major){
+          const l = document.createElement("div");
+          l.className = "rlab";
+          l.textContent = h;
+          l.style.cssText = `left:${x}px;top:16px;transform:translateX(-50%)`;
+          ruler.appendChild(l);
+        }
+      }
+    }
+  }
+
+  const unit = document.createElement("div");
+  unit.className = "runit";
+  unit.textContent = "cm";
+  unit.style.cssText = L.vert ? "left:6px;top:4px" : "left:12px;bottom:6px";
+  ruler.appendChild(unit);
+
+  for (const it of L.items){
+    const hit = document.createElement("div");
+    hit.className = "tick";
+    paint(hit, it.t);
+    const col = "hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)))";
+    if (L.vert) hit.style.cssText = `left:${GUT - 1 - 16}px;top:${it.tickAt}px;width:16px;height:2px;background:${col}`;
+    else        hit.style.cssText = `left:${it.tickAt}px;top:0;width:2px;height:16px;transform:translateX(-1px);background:${col}`;
+    ruler.appendChild(hit);
+  }
+}
+
+function renderStats(L){
+  const box = $("#stats");
+  box.innerHTML = "";
+  if (!L){ box.innerHTML = '<div class="stat"><span class="k">인원</span><span class="v">0</span></div>'; return; }
+  const hs = L.list.map(c => c.height);
+  const avg = hs.reduce((a, b) => a + b, 0) / hs.length;
+  const rows = [
+    ["인원", String(hs.length), "명"],
+    ["최단", fmt(hs[0]), "cm"],
+    ["최장", fmt(hs[hs.length - 1]), "cm"],
+    ["평균", avg.toFixed(1), "cm"],
+    ["편차", fmt(hs[hs.length - 1] - hs[0]), "cm"],
+  ];
+  for (const [k, v, u] of rows){
+    const d = document.createElement("div");
+    d.className = "stat";
+    const ke = document.createElement("span"); ke.className = "k"; ke.textContent = k;
+    const ve = document.createElement("span"); ve.className = "v"; ve.textContent = v;
+    const s = document.createElement("small"); s.textContent = u; ve.appendChild(s);
+    d.append(ke, ve);
+    box.appendChild(d);
+  }
+}
+
+/* ─── editor: image framing ──────────────────────────────── */
+function openPanel(id){
+  state.editing = id || null;
+  const c = id ? state.chars.find(x => x.id === id) : null;
+  state.draft = c ? { img:c.img, iz:c.iz, ix:c.ix, iy:c.iy } : { img:null, iz:1, ix:0, iy:0 };
+  $("#panelTitle").textContent = c ? "캐릭터 수정" : "캐릭터 추가";
+  $("#fName").value = c ? c.name : "";
+  $("#fSeries").value = c ? c.series : "";
+  $("#fHeight").value = c ? c.height : "";
+  $("#delBtn").style.display = c ? "" : "none";
+  syncStage();
+  $("#panel").classList.add("on");
+  $("#panel").setAttribute("aria-hidden", "false");
+  $("#scrim").classList.add("on");
+  setTimeout(() => $("#fName").focus(), 60);
+}
+function closePanel(){
+  $("#panel").classList.remove("on");
+  $("#panel").setAttribute("aria-hidden", "true");
+  $("#scrim").classList.remove("on");
+  state.editing = null;
+  state.draft = { img:null, iz:1, ix:0, iy:0 };
+}
+function syncStage(){
+  const st = $("#stage"), d = state.draft, has = !!d.img;
+  st.innerHTML = "";
+  st.classList.toggle("empty", !has);
+
+  const list = state.chars.map(c => c.height);
+  const h = parseFloat($("#fHeight").value);
+  if (list.length && Number.isFinite(h)){
+    const all = list.concat([h]);
+    const lo = Math.min(...all), hi = Math.max(...all);
+    paint(st, hi > lo ? (h - lo) / (hi - lo) : 0.5);
+  } else {
+    st.style.setProperty("--ch", 210); st.style.setProperty("--cs", "12%"); st.style.setProperty("--cl", "62%");
+  }
+
+  if (has){
+    const im = document.createElement("img");
+    im.src = d.img; im.alt = ""; im.draggable = false;
+    im.style.setProperty("--iz", d.iz);
+    im.style.setProperty("--ix", d.ix);
+    im.style.setProperty("--iy", d.iy);
+    st.appendChild(im);
+  } else {
+    const sp = document.createElement("span");
+    sp.className = "initial";
+    sp.textContent = [...$("#fName").value.trim()][0] || "?";
+    st.appendChild(sp);
+  }
+  const hint = document.createElement("span");
+  hint.className = "hintline";
+  hint.textContent = has ? "끌어서 위치 조절" : "클릭 · 드래그 · 붙여넣기";
+  st.appendChild(hint);
+
+  $("#izoom").disabled = !has;
+  $("#izoom").value = Math.round(d.iz * 100);
+  $("#izoomVal").textContent = Math.round(d.iz * 100) + "%";
+  $("#fitImgBtn").disabled = !has;
+  $("#clearImgBtn").disabled = !has;
+}
+
+/* downscale so localStorage stays small; keep aspect for reframing */
+function ingest(file){
+  if (!file || !file.type.startsWith("image/")){ toast("이미지 파일만 넣을 수 있습니다"); return; }
+  const fr = new FileReader();
+  fr.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 480;
+      const s = Math.min(1, MAX / Math.max(img.width, img.height));
+      const cv = document.createElement("canvas");
+      cv.width = Math.max(1, Math.round(img.width * s));
+      cv.height = Math.max(1, Math.round(img.height * s));
+      const g = cv.getContext("2d");
+      g.fillStyle = "#ffffff"; g.fillRect(0, 0, cv.width, cv.height);
+      g.drawImage(img, 0, 0, cv.width, cv.height);
+      state.draft = { img: cv.toDataURL("image/jpeg", 0.86), iz:1, ix:0, iy:0 };
+      syncStage();
+    };
+    img.onerror = () => toast("이미지를 읽지 못했습니다");
+    img.src = fr.result;
+  };
+  fr.onerror = () => toast("파일을 읽지 못했습니다");
+  fr.readAsDataURL(file);
+}
+
+function commit(){
+  const name = $("#fName").value.trim();
+  const h = parseFloat($("#fHeight").value);
+  if (!name){ toast("이름을 입력해 주세요"); $("#fName").focus(); return; }
+  if (!Number.isFinite(h) || h < 80 || h > 280){ toast("키는 80~280cm 사이로 입력해 주세요"); $("#fHeight").focus(); return; }
+  const d = state.draft;
+  const rec = normalize({ id: state.editing || uid(), name, series: $("#fSeries").value.trim(),
+                          height: h, img: d.img, iz: d.iz, ix: d.ix, iy: d.iy });
+  const i = state.chars.findIndex(x => x.id === rec.id);
+  if (i >= 0) state.chars[i] = rec; else state.chars.push(rec);
+  save(); render(); closePanel();
+  toast(i >= 0 ? `${rec.name} 수정됨` : `${rec.name} 추가됨`);
+}
+
+let toastT;
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove("on"), 2600);
+}
+
+/* ─── export: PNG ────────────────────────────────────────── */
+function loadImage(src){
+  return new Promise((res, rej) => {
+    const im = new Image();
+    im.onload = () => res(im);
+    im.onerror = rej;
+    im.src = src;
+  });
+}
+function roundRect(g, x, y, w, h, r){
+  if (g.roundRect){ g.beginPath(); g.roundRect(x, y, w, h, r); return; }
+  g.beginPath();
+  g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath();
+}
+/* mirrors .disc img: object-fit cover, then scale(iz), then translate(ix%,iy%) */
+function drawFramed(g, img, cx, cy, D, iz, ix, iy){
+  g.save();
+  g.beginPath(); g.arc(cx, cy, D / 2, 0, Math.PI * 2); g.clip();
+  const cover = Math.max(D / img.width, D / img.height) * iz;
+  const w = img.width * cover, h = img.height * cover;
+  g.drawImage(img, cx - w / 2 + (ix / 100) * D, cy - h / 2 + (iy / 100) * D, w, h);
+  g.restore();
+}
+function wrapText(g, text, maxW, maxLines){
+  const words = text.split(/(\s+)/);
+  const lines = [];
+  let cur = "";
+  const push = () => { if (cur) lines.push(cur.trim()); cur = ""; };
+  for (const w of words){
+    if (g.measureText(cur + w).width <= maxW || !cur){ cur += w; continue; }
+    push();
+    if (lines.length >= maxLines) break;
+    cur = w.trim();
+  }
+  if (lines.length < maxLines) push();
+  /* hard-break a single word that still overflows */
+  for (let i = 0; i < lines.length; i++){
+    while (g.measureText(lines[i]).width > maxW && lines[i].length > 1) lines[i] = lines[i].slice(0, -1);
+  }
+  return lines.slice(0, maxLines);
+}
+
+async function buildPNG(){
+  const L = computeLayout();
+  if (!L) throw new Error("empty");
+  try { await document.fonts.ready; } catch(e){}
+
+  const M = 26, HEAD = 58, DPR = 2;
+  const W = L.W + M * 2, H = L.H + HEAD + M * 2;
+  const cv = document.createElement("canvas");
+  cv.width = W * DPR; cv.height = H * DPR;
+  const g = cv.getContext("2d");
+  g.scale(DPR, DPR);
+
+  const col = {
+    field: cssVar("--field"), paper: cssVar("--paper"), ink: cssVar("--ink"),
+    ink2: cssVar("--ink-2"), ink3: cssVar("--ink-3"), rule: cssVar("--rule"), ruleSoft: cssVar("--rule-soft"),
+  };
+  const SANS = '"IBM Plex Sans KR","Apple SD Gothic Neo",sans-serif';
+  const MONO = '"IBM Plex Mono",monospace';
+
+  g.fillStyle = col.paper; g.fillRect(0, 0, W, H);
+
+  /* header */
+  g.fillStyle = col.ink;
+  g.font = `700 26px "Bricolage Grotesque",${SANS}`;
+  g.textBaseline = "alphabetic";
+  g.fillText("키 눈금자", M, M + 22);
+  const hs = L.list.map(c => c.height);
+  const avg = (hs.reduce((a, b) => a + b, 0) / hs.length).toFixed(1);
+  g.fillStyle = col.ink3;
+  g.font = `500 12px ${MONO}`;
+  g.fillText(`${hs.length}명 · ${fmt(hs[0])}–${fmt(hs[hs.length - 1])}cm · 평균 ${avg}cm`, M, M + 42);
+
+  /* field */
+  const OX = M, OY = M + HEAD;
+  g.save();
+  roundRect(g, OX, OY, L.W, L.H, 10);
+  g.fillStyle = col.field; g.fill();
+  g.strokeStyle = col.rule; g.lineWidth = 1; g.stroke();
+  g.clip();
+  g.translate(OX, OY);
+
+  /* graph-paper ruling */
+  const gs = state.mode === "prop" ? (state.ppc >= 24 ? state.ppc : state.ppc * 5) : 60;
+  g.strokeStyle = col.ruleSoft; g.lineWidth = 1; g.globalAlpha = 0.7;
+  g.beginPath();
+  if (L.vert){
+    for (let x = 0; x <= L.W; x += 60){ g.moveTo(x + .5, 0); g.lineTo(x + .5, L.H); }
+    const off = state.mode === "prop" ? L.top0 % gs : 0;
+    for (let y = off; y <= L.H; y += gs){ g.moveTo(0, y + .5); g.lineTo(L.W, y + .5); }
+  } else {
+    const off = state.mode === "prop" ? PAD : 0;
+    for (let x = off; x <= L.W; x += gs){ g.moveTo(x + .5, 0); g.lineTo(x + .5, L.H); }
+    for (let y = 0; y <= L.H; y += 60){ g.moveTo(0, y + .5); g.lineTo(L.W, y + .5); }
+  }
+  g.stroke();
+  g.globalAlpha = 1;
+
+  /* ruler baseline + ticks */
+  g.fillStyle = col.ink; g.globalAlpha = .8;
+  if (L.vert) g.fillRect(GUT - 1, 0, 1.5, L.H); else g.fillRect(0, L.baseline, L.W, 1.5);
+  g.globalAlpha = 1;
+
+  if (state.mode === "prop"){
+    const { step, lab } = tickPlan();
+    g.textBaseline = "middle";
+    for (let h = L.lo; h <= L.hi; h += step){
+      const major = h % lab === 0;
+      g.fillStyle = major ? col.ink3 : col.rule;
+      if (L.vert){
+        const y = L.top0 + (L.hi - h) * state.ppc;
+        const w = major ? 12 : 6;
+        g.fillRect(GUT - 1 - w, y, w, 1);
+        if (major){
+          g.fillStyle = col.ink3; g.font = `500 11px ${MONO}`; g.textAlign = "left";
+          g.fillText(String(h), 6, y);
+        }
+      } else {
+        const x = PAD + (h - L.lo) * state.ppc;
+        g.fillRect(x - .5, L.baseline, 1, major ? 12 : 6);
+        if (major){
+          g.fillStyle = col.ink3; g.font = `500 11px ${MONO}`; g.textAlign = "center";
+          g.fillText(String(h), x, L.baseline + 22);
+        }
+      }
+    }
+  }
+  g.fillStyle = col.ink3; g.font = `500 10px ${MONO}`; g.textAlign = "left"; g.textBaseline = "middle";
+  if (L.vert) g.fillText("CM", 6, 10); else g.fillText("CM", 12, L.H - 12);
+
+  /* leaders + emphasised ticks */
+  for (const it of L.items){
+    g.strokeStyle = rampCss(it.t, .5); g.lineWidth = 1; g.setLineDash([3, 3]);
+    g.beginPath();
+    if (L.vert){ g.moveTo(L.baseline, it.cy + .5); g.lineTo(it.cx - L.D / 2 - 4, it.cy + .5); }
+    else { g.moveTo(it.cx + .5, L.blockBot(it.lane)); g.lineTo(it.cx + .5, L.baseline); }
+    g.stroke(); g.setLineDash([]);
+    g.fillStyle = rampCss(it.t);
+    g.beginPath();
+    if (L.vert) g.arc(L.baseline, it.cy, 3, 0, Math.PI * 2);
+    else g.arc(it.cx, L.baseline, 3, 0, Math.PI * 2);
+    g.fill();
+    if (L.vert) g.fillRect(GUT - 17, it.tickAt - 1, 16, 2);
+    else g.fillRect(it.tickAt - 1, L.baseline, 2, 16);
+  }
+
+  /* tokens */
+  const imgs = new Map();
+  await Promise.all(L.items.filter(it => it.c.img).map(async it => {
+    try { imgs.set(it.c.id, await loadImage(it.c.img)); } catch(e){}
+  }));
+
+  for (const it of L.items){
+    const c = it.c, D = L.D, cx = it.cx, cy = it.cy;
+    g.save();
+    g.shadowColor = "rgba(20,24,31,.20)"; g.shadowBlur = 14; g.shadowOffsetY = 5;
+    g.fillStyle = rampCss(it.t);
+    g.beginPath(); g.arc(cx, cy, D / 2, 0, Math.PI * 2); g.fill();
+    g.restore();
+
+    const im = imgs.get(c.id);
+    if (im) drawFramed(g, im, cx, cy, D, c.iz, c.ix, c.iy);
+    else {
+      g.fillStyle = inkOn(it.t);
+      g.font = `700 ${Math.round(D * .4)}px "Bricolage Grotesque",${SANS}`;
+      g.textAlign = "center"; g.textBaseline = "middle";
+      g.fillText([...c.name][0] || "?", cx, cy + D * .02);
+    }
+    g.strokeStyle = rampCss(it.t, .55); g.lineWidth = 1.5;
+    g.beginPath(); g.arc(cx, cy, D / 2 + 3.5, 0, Math.PI * 2); g.stroke();
+
+    /* label block */
+    const alignC = !L.vert;
+    const tx = alignC ? cx : cx + D / 2 + 11;
+    const maxW = alignC ? L.tokW : VTEXT;
+    let ty = alignC ? cy + D / 2 + 18 : cy;
+    g.textAlign = alignC ? "center" : "left";
+    g.textBaseline = "middle";
+
+    const lines = [];
+    g.font = `600 12.5px ${SANS}`;
+    for (const s of wrapText(g, c.name, maxW, 2)) lines.push({ s, f:`600 12.5px ${SANS}`, c:col.ink, lh:16 });
+    if (c.series){
+      g.font = `400 10.5px ${SANS}`;
+      for (const s of wrapText(g, c.series, maxW, 2)) lines.push({ s, f:`400 10.5px ${SANS}`, c:col.ink3, lh:13 });
+    }
+    const chipH = 18, blockH = lines.reduce((a, l) => a + l.lh, 0) + chipH + 5;
+    if (!alignC) ty = cy - blockH / 2 + 8;
+    for (const l of lines){
+      g.font = l.f; g.fillStyle = l.c;
+      g.fillText(l.s, tx, ty);
+      ty += l.lh;
+    }
+    /* cm chip */
+    g.font = `600 11.5px ${MONO}`;
+    const label = fmt(c.height) + "cm";
+    const tw = g.measureText(label).width, cw = tw + 15;
+    const cxx = alignC ? tx - cw / 2 : tx;
+    roundRect(g, cxx, ty - 2, cw, chipH, 9);
+    g.fillStyle = rampCss(it.t, .14); g.fill();
+    g.strokeStyle = rampCss(it.t, .32); g.lineWidth = 1; g.stroke();
+    const chipShift = parseFloat(cssVar("--chip")) || 0;
+    const rc = ramp(it.t);
+    g.fillStyle = `hsl(${rc.h} ${rc.s}% ${rc.l + toneNow() + chipShift}%)`;
+    g.textAlign = alignC ? "center" : "left";
+    g.fillText(label, alignC ? tx : cxx + 7.5, ty + chipH / 2 - 2);
+  }
+
+  g.restore();
+  return new Promise((res, rej) => cv.toBlob(b => (b ? res(b) : rej(new Error("blob"))), "image/png"));
+}
+
+/* ─── export: standalone HTML ────────────────────────────── */
+/* JSON that is safe to sit inside a script element */
+function safeJSON(v){
+  return JSON.stringify(v)
+    .replace(/</g, "\u003c")
+    .replace(/\u2028/g, "\u2028")
+    .replace(/\u2029/g, "\u2029");
+}
+function buildHTML(){
+  const doc = document.documentElement.cloneNode(true);
+  doc.querySelectorAll(".tok,.leader,.empty,.tick,.rlab,.runit,.base,.stat,script[data-seed]").forEach(n => n.remove());
+  const t = doc.querySelector("#toast"); if (t){ t.textContent = ""; t.className = "toast"; }
+  const p = doc.querySelector("#panel"); if (p){ p.className = "panel"; p.setAttribute("aria-hidden", "true"); }
+  const sc = doc.querySelector("#scrim"); if (sc) sc.className = "scrim";
+  const st = doc.querySelector("#stage"); if (st){ st.innerHTML = '<span class="initial">?</span>'; st.className = "stage empty"; }
+  ["#plot", "#grid", "#ruler", "#fieldwrap"].forEach(s => { const n = doc.querySelector(s); if (n) n.removeAttribute("style"); });
+  const sa = doc.querySelector("#savedAt"); if (sa) sa.textContent = "";
+  doc.removeAttribute("data-theme");
+
+  const data = Object.assign(snapshot(), { eid: uid() });
+  const seed = doc.ownerDocument.createElement("script");
+  seed.setAttribute("data-seed", "1");
+  seed.textContent = "window.__HC_SEED__=" + safeJSON(data) + ";";
+  const first = doc.querySelector("script");
+  if (first && first.parentNode) first.parentNode.insertBefore(seed, first);
+  else doc.querySelector("body").appendChild(seed);
+
+  return "<!doctype html>\n" + doc.outerHTML;
+}
+
+/* ─── saving ─────────────────────────────────────────────── */
+const dlCap = (() => {
+  try {
+    if (window.claude && typeof window.claude.use === "function")
+      return window.claude.use("downloads").catch(() => null);
+  } catch(e){}
+  return Promise.resolve(null);
+})();
+
+async function saveFile(filename, data){
+  const cap = await dlCap;
+  if (cap && typeof cap.save === "function"){
+    await cap.save({ filename, data });
+    return "saved";
+  }
+  const blob = data instanceof Blob ? data : new Blob([data], { type:"text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  return "saved";
+}
+function saveError(e){
+  const code = e && e.code;
+  if (code === "declined") return;                        /* the viewer said no */
+  if (code === "too_large") { toast("파일이 16MB를 넘습니다 — 이미지를 줄여 주세요"); return; }
+  if (code === "rate_limited") { toast("잠시 후 다시 눌러 주세요"); return; }
+  toast("저장하지 못했습니다");
+}
+function stamp(){
+  const d = new Date();
+  const p = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+}
+
+async function doPNG(){
+  const b = $("#pngBtn");
+  if (!state.chars.length){ toast("저장할 캐릭터가 없습니다"); return; }
+  b.disabled = true; b.textContent = "그리는 중…";
+  try {
+    const blob = await buildPNG();
+    await saveFile(`키눈금자-${stamp()}.png`, blob);
+    toast("PNG를 저장했습니다");
+  } catch(e){ saveError(e); }
+  finally { b.disabled = false; b.textContent = "🖼 PNG로 저장"; }
+}
+async function doHTML(){
+  const b = $("#htmlBtn");
+  b.disabled = true;
+  try {
+    await saveFile(`키눈금자-${stamp()}.html`, buildHTML());
+    toast("HTML을 저장했습니다 — 열면 지금 데이터 그대로 나옵니다");
+  } catch(e){ saveError(e); }
+  finally { b.disabled = false; }
+}
+
+/* ─── wiring ─────────────────────────────────────────────── */
+$("#addBtn").addEventListener("click", () => openPanel(null));
+$("#closeBtn").addEventListener("click", closePanel);
+$("#cancelBtn").addEventListener("click", closePanel);
+$("#scrim").addEventListener("click", closePanel);
+$("#saveBtn").addEventListener("click", commit);
+$("#delBtn").addEventListener("click", () => {
+  const c = state.chars.find(x => x.id === state.editing);
+  if (!c) return;
+  state.chars = state.chars.filter(x => x.id !== state.editing);
+  save(); render(); closePanel();
+  toast(`${c.name} 삭제됨`);
+});
+$("#fName").addEventListener("input", syncStage);
+$("#fHeight").addEventListener("input", syncStage);
+$("#panel").addEventListener("keydown", e => {
+  if (e.key === "Escape") closePanel();
+  if (e.key === "Enter" && e.target.tagName === "INPUT" && e.target.type !== "range"){ e.preventDefault(); commit(); }
+});
+
+/* image: pick, drop, paste, pan, zoom */
+const stage = $("#stage");
+$("#pickBtn").addEventListener("click", () => $("#file").click());
+stage.addEventListener("click", () => { if (!state.draft.img) $("#file").click(); });
+stage.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); $("#file").click(); } });
+$("#file").addEventListener("change", e => { ingest(e.target.files[0]); e.target.value = ""; });
+["dragenter", "dragover"].forEach(t => stage.addEventListener(t, e => { e.preventDefault(); stage.classList.add("dz"); }));
+["dragleave", "drop"].forEach(t => stage.addEventListener(t, e => { e.preventDefault(); stage.classList.remove("dz"); }));
+stage.addEventListener("drop", e => { if (e.dataTransfer.files[0]) ingest(e.dataTransfer.files[0]); });
+document.addEventListener("paste", e => {
+  if (!$("#panel").classList.contains("on")) return;
+  const items = (e.clipboardData && e.clipboardData.items) || [];
+  for (const it of items) if (it.type.startsWith("image/")){ ingest(it.getAsFile()); return; }
+});
+$("#izoom").addEventListener("input", e => {
+  state.draft.iz = clamp(Number(e.target.value) / 100, 1, 4);
+  $("#izoomVal").textContent = Math.round(state.draft.iz * 100) + "%";
+  const im = stage.querySelector("img");
+  if (im) im.style.setProperty("--iz", state.draft.iz);
+});
+$("#fitImgBtn").addEventListener("click", () => { state.draft.iz = 1; state.draft.ix = 0; state.draft.iy = 0; syncStage(); });
+$("#clearImgBtn").addEventListener("click", () => { state.draft = { img:null, iz:1, ix:0, iy:0 }; syncStage(); });
+
+let pan = null;
+stage.addEventListener("pointerdown", e => {
+  if (!state.draft.img) return;
+  pan = { x:e.clientX, y:e.clientY, ix:state.draft.ix, iy:state.draft.iy, size:stage.clientWidth };
+  stage.setPointerCapture(e.pointerId);
+  stage.classList.add("dragging");
+});
+stage.addEventListener("pointermove", e => {
+  if (!pan) return;
+  state.draft.ix = clamp(pan.ix + ((e.clientX - pan.x) / pan.size) * 100, -70, 70);
+  state.draft.iy = clamp(pan.iy + ((e.clientY - pan.y) / pan.size) * 100, -70, 70);
+  const im = stage.querySelector("img");
+  if (im){ im.style.setProperty("--ix", state.draft.ix); im.style.setProperty("--iy", state.draft.iy); }
+});
+["pointerup", "pointercancel"].forEach(t => stage.addEventListener(t, () => { pan = null; stage.classList.remove("dragging"); }));
+
+/* view controls */
+function syncZoomUI(){
+  $("#zoom").value = state.ppc;
+  $("#zoomVal").textContent = state.ppc + " px/cm";
+}
+function setOrient(o){
+  if (o !== state.orient){
+    /* a vertical chart wants a much smaller cm-to-pixel scale than a
+       horizontal one, so each orientation keeps its own */
+    if (state.orient === "h") state.ppcH = state.ppc; else state.ppcV = state.ppc;
+    state.ppc = o === "v" ? state.ppcV : state.ppcH;
+    syncZoomUI();
+  }
+  state.orient = o;
+  $("#oH").setAttribute("aria-pressed", String(o === "h"));
+  $("#oV").setAttribute("aria-pressed", String(o === "v"));
+  save(); render();
+}
+function setMode(m){
+  state.mode = m;
+  $("#mProp").setAttribute("aria-pressed", String(m === "prop"));
+  $("#mRank").setAttribute("aria-pressed", String(m === "rank"));
+  $("#zoomKnob").classList.toggle("off", m !== "prop");
+  $("#zoom").disabled = m !== "prop";
+  $("#fitBtn").disabled = m !== "prop";
+  save(); render();
+}
+$("#oH").addEventListener("click", () => setOrient("h"));
+$("#oV").addEventListener("click", () => setOrient("v"));
+$("#mProp").addEventListener("click", () => setMode("prop"));
+$("#mRank").addEventListener("click", () => setMode("rank"));
+
+$("#zoom").addEventListener("input", e => {
+  state.ppc = Number(e.target.value);
+  $("#zoomVal").textContent = state.ppc + " px/cm";
+  render();
+});
+$("#zoom").addEventListener("change", save);
+$("#size").addEventListener("input", e => {
+  state.size = Number(e.target.value);
+  $("#sizeVal").textContent = state.size + " px";
+  render();
+});
+$("#size").addEventListener("change", save);
+$("#fitBtn").addEventListener("click", () => {
+  if (!state.chars.length) return;
+  const { lo, hi } = bounds(state.chars);
+  const avail = state.orient === "v"
+    ? Math.max(360, (window.innerHeight || 800) - 260) - (state.size + 40)
+    : $("#fieldwrap").clientWidth - PAD * 2;
+  state.ppc = clamp(Math.floor(avail / (hi - lo)), 18, 130);
+  syncZoomUI();
+  save(); render();
+});
+
+$("#pngBtn").addEventListener("click", doPNG);
+$("#htmlBtn").addEventListener("click", doHTML);
+$("#resetBtn").addEventListener("click", () => {
+  state.chars = SEED.map(normalize);
+  save(); render();
+  toast("예시 데이터로 되돌렸습니다");
+});
+$("#themeBtn").addEventListener("click", () => {
+  const cur = document.documentElement.getAttribute("data-theme");
+  const sysDark = matchMedia("(prefers-color-scheme: dark)").matches;
+  document.documentElement.setAttribute("data-theme", cur ? (cur === "dark" ? "light" : "dark") : (sysDark ? "light" : "dark"));
+  render();
+});
+
+let rt;
+addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(render, 140); });
+
+/* ─── boot ───────────────────────────────────────────────── */
+load();
+$("#zoom").value = state.ppc;
+$("#zoomVal").textContent = state.ppc + " px/cm";
+$("#size").value = state.size;
+$("#sizeVal").textContent = state.size + " px";
+$("#oH").setAttribute("aria-pressed", String(state.orient === "h"));
+$("#oV").setAttribute("aria-pressed", String(state.orient === "v"));
+setMode(state.mode);
+})();
+</script>
