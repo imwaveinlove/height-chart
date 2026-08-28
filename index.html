@@ -420,7 +420,7 @@ footer.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;f
         <button class="btn" id="fitImgBtn" type="button" disabled>채우기</button>
         <button class="btn" id="clearImgBtn" type="button" disabled>지우기</button>
       </div>
-      <span class="hint" id="frameHint">원 안에서 끌어 위치를, 슬라이더로 크기를 맞춥니다. 가로로 긴 그림은 「전체 보기」로 잘리지 않게 담고, 「채우기」로 원을 꽉 채웁니다.</span>
+      <span class="hint" id="frameHint">넣으면 그림 전체가 들어갑니다. 원 안에서 끌어 위치를, 슬라이더로 크기를 맞추세요. 「채우기」를 누르면 원을 꽉 채우도록 잘라 담습니다.</span>
     </div>
     <div class="fld">
       <label for="fName">이름</label>
@@ -958,6 +958,12 @@ function syncStage(){
 }
 
 /* downscale so localStorage stays small; keep aspect for reframing */
+function hasAlpha(g, w, h){
+  const d = g.getImageData(0, 0, w, h).data;
+  /* sample every 4th pixel — enough to spot a transparent background */
+  for (let i = 3; i < d.length; i += 16) if (d[i] < 250) return true;
+  return false;
+}
 function ingest(file){
   if (!file || !file.type.startsWith("image/")){ toast("이미지 파일만 넣을 수 있습니다"); return; }
   const fr = new FileReader();
@@ -970,9 +976,15 @@ function ingest(file){
       cv.width = Math.max(1, Math.round(img.width * s));
       cv.height = Math.max(1, Math.round(img.height * s));
       const g = cv.getContext("2d");
-      g.fillStyle = "#ffffff"; g.fillRect(0, 0, cv.width, cv.height);
       g.drawImage(img, 0, 0, cv.width, cv.height);
-      state.draft = { img: cv.toDataURL("image/jpeg", 0.86), iz:1, ix:0, iy:0 };
+      /* keep a transparent background transparent; JPEG only when opaque */
+      const alpha = hasAlpha(g, cv.width, cv.height);
+      const data = alpha ? cv.toDataURL("image/png") : cv.toDataURL("image/jpeg", 0.86);
+      /* start showing the WHOLE picture: object-fit:cover would crop a
+         non-square image to its short side, and that is what people
+         expect back the moment they drop a photo in */
+      const fit = Math.min(cv.width, cv.height) / Math.max(cv.width, cv.height);
+      state.draft = { img: data, iz: clamp(fit, 0.2, 1), ix:0, iy:0 };
       syncStage();
     };
     img.onerror = () => toast("이미지를 읽지 못했습니다");
