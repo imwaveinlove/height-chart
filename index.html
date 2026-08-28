@@ -563,8 +563,8 @@ function normalize(c){
     height: clamp(Math.round(h * 2) / 2, 80, 280),
     img: typeof c.img === "string" && c.img.startsWith("data:image") ? c.img : null,
     iz: clamp(Number(c.iz) || 1, 0.2, 4),
-    ix: clamp(Number(c.ix) || 0, -70, 70),
-    iy: clamp(Number(c.iy) || 0, -70, 70),
+    ix: clamp(Number(c.ix) || 0, -1000, 1000),
+    iy: clamp(Number(c.iy) || 0, -1000, 1000),
   };
 }
 
@@ -955,6 +955,20 @@ function syncStage(){
   $("#fitImgBtn").disabled = !has;
   $("#containBtn").disabled = !has;
   $("#clearImgBtn").disabled = !has;
+}
+
+/* How far the picture may be dragged, as a percentage of the disc.
+   object-fit:cover scales it to the short side, so a wide photo hangs
+   over the edges by (drawn - disc) / 2 — that overhang is exactly the
+   travel needed to bring its far edge into view. Ratios only, so the
+   stored value stays valid at any disc size. */
+function panRange(im, iz){
+  if (!im || !im.naturalWidth) return { x:0, y:0 };
+  const cover = Math.max(1 / im.naturalWidth, 1 / im.naturalHeight) * iz;
+  return {
+    x: Math.abs(im.naturalWidth * cover - 1) / 2 * 100,
+    y: Math.abs(im.naturalHeight * cover - 1) / 2 * 100,
+  };
 }
 
 /* downscale so localStorage stays small; keep aspect for reframing */
@@ -1365,7 +1379,13 @@ $("#izoom").addEventListener("input", e => {
   state.draft.iz = clamp(Number(e.target.value) / 100, 0.2, 4);
   $("#izoomVal").textContent = Math.round(state.draft.iz * 100) + "%";
   const im = stage.querySelector("img");
-  if (im) im.style.setProperty("--iz", state.draft.iz);
+  if (!im) return;
+  const r = panRange(im, state.draft.iz);
+  state.draft.ix = clamp(state.draft.ix, -r.x, r.x);
+  state.draft.iy = clamp(state.draft.iy, -r.y, r.y);
+  im.style.setProperty("--iz", state.draft.iz);
+  im.style.setProperty("--ix", state.draft.ix);
+  im.style.setProperty("--iy", state.draft.iy);
 });
 $("#fitImgBtn").addEventListener("click", () => { state.draft.iz = 1; state.draft.ix = 0; state.draft.iy = 0; syncStage(); });
 /* object-fit:cover already crops to the short side, so the scale that
@@ -1383,14 +1403,15 @@ $("#clearImgBtn").addEventListener("click", () => { state.draft = { img:null, iz
 let pan = null;
 stage.addEventListener("pointerdown", e => {
   if (!state.draft.img) return;
-  pan = { x:e.clientX, y:e.clientY, ix:state.draft.ix, iy:state.draft.iy, size:stage.clientWidth };
+  pan = { x:e.clientX, y:e.clientY, ix:state.draft.ix, iy:state.draft.iy,
+          size:stage.clientWidth, r:panRange(stage.querySelector("img"), state.draft.iz) };
   stage.setPointerCapture(e.pointerId);
   stage.classList.add("dragging");
 });
 stage.addEventListener("pointermove", e => {
   if (!pan) return;
-  state.draft.ix = clamp(pan.ix + ((e.clientX - pan.x) / pan.size) * 100, -70, 70);
-  state.draft.iy = clamp(pan.iy + ((e.clientY - pan.y) / pan.size) * 100, -70, 70);
+  state.draft.ix = clamp(pan.ix + ((e.clientX - pan.x) / pan.size) * 100, -pan.r.x, pan.r.x);
+  state.draft.iy = clamp(pan.iy + ((e.clientY - pan.y) / pan.size) * 100, -pan.r.y, pan.r.y);
   const im = stage.querySelector("img");
   if (im){ im.style.setProperty("--ix", state.draft.ix); im.style.setProperty("--iy", state.draft.iy); }
 });
