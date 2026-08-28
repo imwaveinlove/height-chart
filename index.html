@@ -39,8 +39,8 @@
   --shadow-lift:0 2px 8px rgba(18,55,66,.12), 0 20px 44px -16px rgba(30,120,150,.44);
 }
 
-/* 파도 — 볕 든 모래에서 깊은 바다로 */
-:root[data-theme="pado"]{
+/* 블루레몬 — 볕 든 레몬빛에서 깊은 바다로 */
+:root[data-theme="bluelemon"]{
   --paper:#FDF1D2; --paper-2:#B7DEEC; --field:#FCFBF4; --surface:#FFFFFF;
   --ink:#263A44; --ink-2:#476574; --ink-3:#617F8C;
   --rule:#CFDFE4; --rule-soft:#E6EFF1;
@@ -199,7 +199,7 @@ h1{
 /* pastel bloom */
 :root[data-theme="baekco"] .disc,
 :root[data-theme="blooming"] .disc,
-:root[data-theme="pado"] .disc{
+:root[data-theme="bluelemon"] .disc{
   box-shadow:var(--shadow), 0 0 0 3px var(--field),
              0 0 0 4px hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .6),
              0 0 24px -2px hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .6);
@@ -208,8 +208,8 @@ h1{
 :root[data-theme="baekco"] .tok:focus-visible .disc,
 :root[data-theme="blooming"] .tok:hover .disc,
 :root[data-theme="blooming"] .tok:focus-visible .disc,
-:root[data-theme="pado"] .tok:hover .disc,
-:root[data-theme="pado"] .tok:focus-visible .disc{
+:root[data-theme="bluelemon"] .tok:hover .disc,
+:root[data-theme="bluelemon"] .tok:focus-visible .disc{
   box-shadow:var(--shadow-lift), 0 0 0 3px var(--field),
              0 0 0 5px hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone))),
              0 0 34px 0 hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .7);
@@ -357,7 +357,7 @@ footer.foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;f
       <div class="seg" role="group" aria-label="테마" id="themeSeg">
         <button data-set="baekco" aria-pressed="true">백코</button>
         <button data-set="blooming" aria-pressed="false">블루밍</button>
-        <button data-set="pado" aria-pressed="false">파도</button>
+        <button data-set="bluelemon" aria-pressed="false">블루레몬</button>
         <button data-set="light" aria-pressed="false">라이트</button>
         <button data-set="dark" aria-pressed="false">다크</button>
       </div>
@@ -472,9 +472,9 @@ const RAMPS = {
     { p:0.5, h:330, s:74, l:74 },
     { p:1,   h:24,  s:84, l:71 },
   ],
-  /* 파도: 볕든 노랑 → 물빛 → 깊은 바다. 중간 채도를 낮춰
+  /* 블루레몬: 볕든 레몬 → 물빛 → 깊은 바다. 중간 채도를 낮춰
      노랑에서 파랑으로 넘어갈 때 형광 연두를 지나지 않게 한다 */
-  pado: [
+  bluelemon: [
     { p:0,    h:45,  s:88, l:66 },
     { p:0.20, h:74,  s:38, l:62 },
     { p:0.55, h:170, s:42, l:57 },
@@ -524,7 +524,8 @@ function adopt(d){
   state.chars = chars;
   if (d.mode === "rank" || d.mode === "prop") state.mode = d.mode;
   if (d.orient === "v" || d.orient === "h") state.orient = d.orient;
-  if (["light","dark","baekco","blooming","pado"].indexOf(d.theme) >= 0) state.theme = d.theme;
+  const th = d.theme === "pado" ? "bluelemon" : d.theme;   /* 첫 이름이 파도였다 */
+  if (["light","dark","baekco","blooming","bluelemon"].indexOf(th) >= 0) state.theme = th;
   if (Number.isFinite(d.ppcH)) state.ppcH = clamp(d.ppcH, 18, 130);
   if (Number.isFinite(d.ppcV)) state.ppcV = clamp(d.ppcV, 18, 130);
   if (Number.isFinite(d.ppc)) state.ppc = clamp(d.ppc, 18, 130);
