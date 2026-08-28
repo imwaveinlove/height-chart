@@ -1,0 +1,113 @@
+<div class="wrap">
+  <header class="head">
+    <div class="brand">
+      <span class="eyebrow handle">@whitecotchi</span>
+      <h1>캐릭터 키 비교</h1>
+      <p class="tagline">캐릭터를 실제 키 좌표 위에 찍어 비교합니다. 겹치면 옆으로 쌓이고, 점선이 눈금자까지 이어집니다.</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="bars">
+    <div class="toolbar">
+      <button class="btn primary" id="addBtn">＋ 캐릭터 추가</button>
+      <span class="sep"></span>
+      <div class="seg" role="group" aria-label="방향">
+        <button id="oH" aria-pressed="true">가로</button>
+        <button id="oV" aria-pressed="false">세로</button>
+      </div>
+      <div class="seg" role="group" aria-label="배치 방식">
+        <button id="mProp" aria-pressed="true">비례 배치</button>
+        <button id="mRank" aria-pressed="false">균등 배치</button>
+      </div>
+      <span class="spacer"></span>
+      <div class="seg" role="group" aria-label="테마" id="themeSeg">
+        <button data-set="baekco" aria-pressed="true">백코</button>
+        <button data-set="blooming" aria-pressed="false">블루밍</button>
+        <button data-set="bluelemon" aria-pressed="false">블루레몬</button>
+        <button data-set="light" aria-pressed="false">라이트</button>
+        <button data-set="dark" aria-pressed="false">다크</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="knob" id="zoomKnob">
+        <label for="zoom">Scale</label>
+        <input type="range" id="zoom" min="18" max="130" step="1" value="60">
+        <span class="val" id="zoomVal">60 px/cm</span>
+      </div>
+      <button class="btn ghost" id="fitBtn">화면에 맞추기</button>
+      <span class="sep"></span>
+      <div class="knob">
+        <label for="size">아바타</label>
+        <input type="range" id="size" min="52" max="150" step="2" value="84">
+        <span class="val" id="sizeVal">84 px</span>
+      </div>
+      <span class="spacer"></span>
+      <button class="btn" id="pngBtn">🖼 PNG로 저장</button>
+      <button class="btn" id="htmlBtn">📄 HTML로 저장</button>
+      <button class="btn danger" id="resetBtn">예시로 되돌리기</button>
+    </div>
+  </div>
+
+  <div class="fieldwrap" id="fieldwrap">
+    <div class="plot" id="plot">
+      <div class="grid" id="grid"></div>
+      <div class="ruler" id="ruler"></div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span>브라우저에 자동 저장됩니다 · 아바타를 누르면 수정</span>
+    <span id="savedAt"></span>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel" aria-hidden="true" aria-label="캐릭터 편집">
+  <header>
+    <h2 id="panelTitle">캐릭터 추가</h2>
+    <button class="btn ghost" id="closeBtn" aria-label="닫기">✕</button>
+  </header>
+  <div class="body">
+    <div class="framer">
+      <div class="stage empty" id="stage" tabindex="0" role="button" aria-label="이미지 등록 후 드래그해서 위치 조절">
+        <span class="initial">?</span>
+        <span class="hintline" id="stageHint">클릭 · 드래그 · 붙여넣기</span>
+      </div>
+      <input type="file" id="file" accept="image/*" hidden>
+      <div class="ctl">
+        <label for="izoom">크기</label>
+        <input type="range" id="izoom" min="25" max="600" step="1" value="100" disabled>
+        <span class="val" id="izoomVal" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);min-width:42px">100%</span>
+      </div>
+      <div class="row">
+        <button class="btn" id="pickBtn" type="button">이미지 선택</button>
+        <button class="btn" id="containBtn" type="button" disabled>전체 보기</button>
+        <button class="btn" id="fitImgBtn" type="button" disabled>채우기</button>
+        <button class="btn" id="clearImgBtn" type="button" disabled>지우기</button>
+      </div>
+      <span class="hint" id="frameHint">넣으면 원본 전체가 잘림 없이 들어갑니다. 슬라이더로 키우면 그만큼 확대되고, 끌어서 보일 부분을 고르세요. 「채우기」는 원을 꽉 채우고, 「전체 보기」는 다시 전체를 담습니다.</span>
+    </div>
+    <div class="fld">
+      <label for="fName">이름</label>
+      <input type="text" id="fName" placeholder="고죠 사토루" autocomplete="off">
+    </div>
+    <div class="fld">
+      <label for="fSeries">작품 <span style="text-transform:none;letter-spacing:0">(선택)</span></label>
+      <input type="text" id="fSeries" placeholder="주술회전" autocomplete="off">
+    </div>
+    <div class="fld">
+      <label for="fHeight">키 (cm)</label>
+      <input type="number" id="fHeight" min="80" max="280" step="0.5" placeholder="190">
+      <span class="hint">소수점 0.5까지 입력할 수 있습니다.</span>
+    </div>
+    <button class="btn danger" id="delBtn" style="align-self:flex-start">이 캐릭터 삭제</button>
+  </div>
+  <footer>
+    <button class="btn" id="cancelBtn">취소</button>
+    <button class="btn primary" id="saveBtn">저장</button>
+  </footer>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>

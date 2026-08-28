@@ -1,0 +1,24 @@
+/* ─── shell ──────────────────────────────────────────────── */
+.wrap{max-width:1360px;margin:0 auto;padding:28px 20px 64px;display:flex;flex-direction:column;gap:18px}
+
+header.head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px}
+.brand{display:flex;flex-direction:column;gap:4px;min-width:0}
+.eyebrow.handle{text-transform:none;letter-spacing:.06em;font-size:12px}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+}
+h1{
+  font-family:"Bricolage Grotesque","IBM Plex Sans KR",sans-serif;
+  font-variation-settings:"wdth" 88,"opsz" 48;
+  font-weight:700;font-size:clamp(30px,4.4vw,46px);line-height:1.02;
+  margin:0;letter-spacing:-.02em;text-wrap:balance;
+}
+.tagline{color:var(--ink-2);font-size:14px;max-width:46ch}
+
+.stats{display:flex;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.stat{padding:9px 16px;display:flex;flex-direction:column;gap:1px;min-width:78px}
+.stat + .stat{border-left:1px solid var(--rule-soft)}
+.stat .k{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.stat .v{font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat .v small{font-size:11px;font-weight:400;color:var(--ink-3);margin-left:1px}

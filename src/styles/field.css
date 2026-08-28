@@ -1,0 +1,27 @@
+/* ─── the field ──────────────────────────────────────────── */
+.fieldwrap{
+  position:relative;border:1px solid var(--rule);border-radius:var(--r);
+  background:var(--field);overflow-x:auto;overflow-y:hidden;box-shadow:var(--shadow);
+}
+.fieldwrap.vert{overflow-y:visible}
+.plot{position:relative;min-height:320px}
+.grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(to right,var(--rule-soft) 0 1px,transparent 1px var(--gx,60px)),
+    repeating-linear-gradient(to bottom,var(--rule-soft) 0 1px,transparent 1px var(--gy,60px));
+  background-position:var(--gx-off,0) var(--gy-off,0);
+  opacity:.7;
+  -webkit-mask-image:var(--gmask,linear-gradient(to bottom,transparent 0,#000 40px));
+          mask-image:var(--gmask,linear-gradient(to bottom,transparent 0,#000 40px));
+}
+
+.leader{position:absolute;pointer-events:none}
+.leader.h{width:0;border-left:1px dashed hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .5)}
+.leader.v{height:0;border-top:1px dashed hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)) / .5)}
+.leader::after{
+  content:"";position:absolute;width:6px;height:6px;border-radius:50%;
+  background:hsl(var(--ch) var(--cs) calc(var(--cl) + var(--tone)));
+}
+.leader.h::after{left:-3px;bottom:-3px}
+.leader.v::after{top:-3px;left:-3px}

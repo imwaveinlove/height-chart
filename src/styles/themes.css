@@ -1,0 +1,75 @@
+/* ─── tokens ─────────────────────────────────────────────────
+   백코모드가 바닥값이라 스크립트가 돌기 전에도 기본 테마로 그려진다.
+   나머지 셋은 data-theme으로 덮어쓴다. */
+:root{
+  --paper:#FFEAF3; --field:#FFF6FB; --surface:#FFFFFF;
+  --ink:#4E2242; --ink-2:#7A4A6B; --ink-3:#9E6A8C;
+  --rule:#F6C9E0; --rule-soft:#FBE0EE;
+  --navy:#FF2D87; --navy-ink:#FFFFFF; --danger:#D6246B;
+  --tone:0%;            /* scale-ramp lightness shift */
+  --chip:-30%;          /* cm-chip text shift */
+  --ink-shift:-46%;     /* how deep the initial sits under its disc */
+  --paper-2:#F0E4FC;
+  --body-bg:radial-gradient(126% 92% at 50% 0%,#FFF5FB 0%,#FFE7F4 44%,#F0E4FC 100%);
+  --shadow:0 1px 2px rgba(122,40,92,.07), 0 10px 26px -12px rgba(206,64,142,.36);
+  --shadow-lift:0 2px 8px rgba(122,40,92,.12), 0 20px 44px -16px rgba(206,64,142,.46);
+  --r:10px;
+}
+
+/* 블루밍 — 하늘색에서 파스텔 민트를 지나 바다로 */
+:root[data-theme="blooming"]{
+  --paper:#E4F2FA; --field:#F4FBFE; --surface:#FFFFFF;
+  --ink:#123742; --ink-2:#376274; --ink-3:#55848F;
+  --rule:#BEDFEC; --rule-soft:#DBEFF7;
+  --navy:#0E90B4; --navy-ink:#FFFFFF; --danger:#C0374C;
+  --tone:0%; --chip:-30%; --ink-shift:-46%;
+  --paper-2:#D9F5EE;
+  --body-bg:radial-gradient(126% 92% at 50% 0%,#F3FCFE 0%,#DCEFFA 44%,#D9F5EE 100%);
+  --shadow:0 1px 2px rgba(18,55,66,.07), 0 10px 26px -12px rgba(30,120,150,.34);
+  --shadow-lift:0 2px 8px rgba(18,55,66,.12), 0 20px 44px -16px rgba(30,120,150,.44);
+}
+
+/* 블루레몬 — 볕 든 레몬빛에서 깊은 바다로 */
+:root[data-theme="bluelemon"]{
+  --paper:#FDF1D2; --paper-2:#B7DEEC; --field:#FCFBF4; --surface:#FFFFFF;
+  --ink:#263A44; --ink-2:#476574; --ink-3:#617F8C;
+  --rule:#CFDFE4; --rule-soft:#E6EFF1;
+  --navy:#1B7CA6; --navy-ink:#FFFFFF; --danger:#BF4437;
+  --tone:0%; --chip:-26%; --ink-shift:-42%;
+  --body-bg:linear-gradient(172deg,#FEF6E0 0%,#FCEBBE 26%,#DCEEE4 62%,#AFDAEB 100%);
+  --shadow:0 1px 2px rgba(30,58,68,.07), 0 10px 26px -12px rgba(28,110,144,.34);
+  --shadow-lift:0 2px 8px rgba(30,58,68,.12), 0 20px 44px -16px rgba(28,110,144,.44);
+}
+
+:root[data-theme="light"]{
+  --paper:#EDEFF3; --field:#F6F7FA; --surface:#FFFFFF;
+  --ink:#14181F; --ink-2:#4B5563; --ink-3:#7C8798;
+  --rule:#CBD2DC; --rule-soft:#DDE2EA;
+  --navy:#1F3A5F; --navy-ink:#FFFFFF; --danger:#B3261E;
+  --tone:0%; --chip:-9%; --ink-shift:-28%;
+  --paper-2:#EDEFF3;   /* flat: same as --paper, so the PNG ground stays solid */
+  --body-bg:var(--paper);
+  --shadow:0 1px 2px rgba(20,24,31,.06), 0 8px 24px -12px rgba(20,24,31,.22);
+  --shadow-lift:0 2px 6px rgba(20,24,31,.10), 0 18px 40px -16px rgba(20,24,31,.34);
+}
+
+:root[data-theme="dark"]{
+  --paper:#0E1116; --field:#131820; --surface:#1A2029;
+  --ink:#E5E9EF; --ink-2:#A6B0BF; --ink-3:#6F7B8C;
+  --rule:#2C3543; --rule-soft:#232B36;
+  --navy:#8FB4E4; --navy-ink:#0E1116; --danger:#F2867E;
+  --tone:9%; --chip:10%; --ink-shift:-38%;
+  --paper-2:#0E1116;
+  --body-bg:var(--paper);
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.45), 0 18px 40px -16px rgba(0,0,0,.8);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; background:var(--body-bg); background-attachment:fixed; color:var(--ink);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;
+  font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px;border-radius:4px}
